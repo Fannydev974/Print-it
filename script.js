@@ -18,7 +18,8 @@ const slides = [
 ];
 
 // Variables
-let i = 0;
+let position = 0;
+// querySelector pour retourner le 1er élement qui correspond à un selecteur css.
 const leftEl = document.querySelector(".arrow_left");
 const rightEl = document.querySelector(".arrow_right");
 const dotsContainer = document.querySelector(".dots");
@@ -28,40 +29,43 @@ const txt = document.querySelector("p");
 
 // Créez et ajoutez les éléments .dot enfants en fonction du tableau slides
 for (let index = 0; index < slides.length; index++) {
-    const dot = document.createElement("div");
+    console.log('index : ', index)
+    const dot = document.createElement("span");
     dot.classList.add("dot");
     dotsContainer.appendChild(dot);
+
+    //Si index est égal à 0, on ajoute la classe
+    if (index === 0) {
+        dot.classList.add("dot_selected");
+    }
 }
 
-// Sélectionner à nouveau les éléments (.dot) après les avoirs ajoutés
-const dotsEl = dotsContainer.querySelectorAll(".dot");
 
-//Ajouter la classe dot_selected à la première bullet (index 0)
-dotsEl[0].classList.add("dot_selected");
 
-// Écouteurs d'événements pour les boutons gauche et droite (=> a la place du mot function)
+// Event Listenner pour les boutons gauche et droite (=>) a la place du mot function
 leftEl.addEventListener("click", () => {
-    i--;
-    if (i === -1) {
-        i = slides.length - 1;
+    position--;
+    if (position === -1) {
+        position = slides.length - 1;
     }
-    img.src = slides[i].image;
-    txt.innerHTML = slides[i].tagLine;
+    img.src = `./slideshow/${slides[position].image}`;
+    txt.innerHTML = slides[position].tagLine;
     dynamicBullets(i);
 });
 
 rightEl.addEventListener("click", () => {
-    i++;
-    if (i === slides.length) {
-        i = 0;
+    position++;
+    if (position === slides.length) {
+        position = 0;
     }
-    img.src = slides[i].image;
-    txt.innerHTML = slides[i].tagLine;
-    dynamicBullets(i);
+    img.src = `./slideshow/${slides[position].image}`;
+    txt.innerHTML = slides[position].tagLine;
+    dynamicBullets(position);
 });
 
 // Fonction pour mettre les bullets dynamiquement blanc/gris
 function dynamicBullets(count) {
+    const dotsEl = document.querySelectorAll(".dot")
     dotsEl.forEach((dot, index) => {
         if (index === count) {
             dot.classList.add("dot_selected");
